@@ -1,0 +1,149 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 0 0% 100%;
+  --foreground: 20 14.3% 4.1%;
+  --muted: 60 4.8% 95.9%;
+  --muted-foreground: 25 5.3% 44.7%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 20 14.3% 4.1%;
+  --card: 0 0% 100%;
+  --card-foreground: 20 14.3% 4.1%;
+  --border: 20 5.9% 90%;
+  --input: 20 5.9% 90%;
+  --primary: 207 90% 54%;
+  --primary-foreground: 211 100% 99%;
+  --secondary: 60 4.8% 95.9%;
+  --secondary-foreground: 24 9.8% 10%;
+  --accent: 60 4.8% 95.9%;
+  --accent-foreground: 24 9.8% 10%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 60 9.1% 97.8%;
+  --ring: 20 14.3% 4.1%;
+  --radius: 0.5rem;
+  
+  /* Kid-friendly colors */
+  --coral: 0 73% 70%; /* #FF6B6B */
+  --teal: 173 67% 58%; /* #4ECDC4 */
+  --skyblue: 203 88% 62%; /* #45B7D1 */
+  --mint: 139 38% 69%; /* #96CEB4 */
+  --sunny: 43 89% 70%; /* #FECA57 */
+  --pink: 308 100% 82%; /* #FF9FF3 */
+  --kidblue: 218 100% 66%; /* #54A0FF */
+  --darkgray: 220 20% 20%; /* #2F3640 */
+}
+
+.dark {
+  --background: 240 10% 3.9%;
+  --foreground: 0 0% 98%;
+  --muted: 240 3.7% 15.9%;
+  --muted-foreground: 240 5% 64.9%;
+  --popover: 240 10% 3.9%;
+  --popover-foreground: 0 0% 98%;
+  --card: 240 10% 3.9%;
+  --card-foreground: 0 0% 98%;
+  --border: 240 3.7% 15.9%;
+  --input: 240 3.7% 15.9%;
+  --primary: 207 90% 54%;
+  --primary-foreground: 211 100% 99%;
+  --secondary: 240 3.7% 15.9%;
+  --secondary-foreground: 0 0% 98%;
+  --accent: 240 3.7% 15.9%;
+  --accent-foreground: 0 0% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 98%;
+  --ring: 240 4.9% 83.9%;
+  --radius: 0.5rem;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-gradient-to-br from-sky-400 via-teal-400 to-green-300 min-h-screen;
+    font-family: 'Open Sans', sans-serif;
+  }
+
+  .font-fredoka {
+    font-family: 'Fredoka One', cursive;
+  }
+}
+
+@layer utilities {
+  .bg-coral {
+    background-color: hsl(var(--coral));
+  }
+  .bg-teal {
+    background-color: hsl(var(--teal));
+  }
+  .bg-skyblue {
+    background-color: hsl(var(--skyblue));
+  }
+  .bg-mint {
+    background-color: hsl(var(--mint));
+  }
+  .bg-sunny {
+    background-color: hsl(var(--sunny));
+  }
+  .bg-pink {
+    background-color: hsl(var(--pink));
+  }
+  .bg-kidblue {
+    background-color: hsl(var(--kidblue));
+  }
+  .bg-darkgray {
+    background-color: hsl(var(--darkgray));
+  }
+  
+  .text-coral {
+    color: hsl(var(--coral));
+  }
+  .text-teal {
+    color: hsl(var(--teal));
+  }
+  .text-skyblue {
+    color: hsl(var(--skyblue));
+  }
+  .text-mint {
+    color: hsl(var(--mint));
+  }
+  .text-sunny {
+    color: hsl(var(--sunny));
+  }
+  .text-pink {
+    color: hsl(var(--pink));
+  }
+  .text-kidblue {
+    color: hsl(var(--kidblue));
+  }
+  .text-darkgray {
+    color: hsl(var(--darkgray));
+  }
+
+  .border-coral {
+    border-color: hsl(var(--coral));
+  }
+  .border-teal {
+    border-color: hsl(var(--teal));
+  }
+  .border-mint {
+    border-color: hsl(var(--mint));
+  }
+  .border-sunny {
+    border-color: hsl(var(--sunny));
+  }
+}
+
+@keyframes celebrate {
+  0% { transform: translate(-50%, -50%) scale(0) rotate(0deg); opacity: 1; }
+  50% { transform: translate(-50%, -50%) scale(1.2) rotate(180deg); opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(0) rotate(360deg); opacity: 0; }
+}
+
+.animate-celebrate {
+  animation: celebrate 1s ease-out forwards;
+}
