@@ -58,8 +58,11 @@ export default function Home() {
 
   const handlePlaylistClick = (playlistId: number) => {
     showCelebration();
-    // In a real app, this would open the playlist
-    console.log("Opening playlist:", playlistId);
+    // Navigate to the playlist's category to show the German educational videos
+    const playlist = playlists.find(p => p.id === playlistId);
+    if (playlist && playlist.categoryId) {
+      setLocation(`/category/${playlist.categoryId}`);
+    }
   };
 
   // Get category video counts
