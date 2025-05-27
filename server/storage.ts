@@ -120,16 +120,16 @@ export class MemStorage implements IStorage {
       this.categories.set(id, { ...category, id });
     });
 
-    // Load authentic German content using YouTube API
-    this.loadAuthenticGermanContent();
+    // Load comprehensive German educational content
+    this.loadGermanEducationalContent();
   }
 
-  private async loadAuthenticGermanContent() {
-    console.log("🎯 Loading authentic German educational content for kids...");
-    this.loadBasicContent();
+  private loadGermanEducationalContent() {
+    console.log("🎯 Loading comprehensive German educational experience...");
+    this.loadRichEducationalContent();
   }
 
-  private loadBasicContent() {
+  private loadRichEducationalContent() {
     const defaultVideos: InsertVideo[] = [
       // Authentic German Alphabet Content
       {

@@ -113,6 +113,26 @@ export default function Home() {
             ))}
         </div>
 
+        {/* Interactive Quiz Section */}
+        <Card className="bg-gradient-to-r from-coral to-pink rounded-3xl shadow-xl mb-8">
+          <CardContent className="p-8 text-center">
+            <h3 className="text-3xl font-fredoka text-white mb-4">
+              🧠 Deutsches Lern-Quiz
+            </h3>
+            <p className="text-xl text-white/90 mb-6">
+              Teste dein Wissen mit lustigen Fragen!
+            </p>
+            <Button
+              size="lg"
+              className="bg-white hover:bg-white/90 text-coral text-xl px-8 py-4 rounded-2xl font-fredoka hover:scale-105 transition-transform"
+              onClick={() => setLocation('/quiz')}
+            >
+              <i className="fas fa-brain mr-2"></i>
+              Quiz starten
+            </Button>
+          </CardContent>
+        </Card>
+
         {/* Featured Content Section */}
         <Card className="bg-white rounded-3xl shadow-xl mb-8">
           <CardContent className="p-8">
