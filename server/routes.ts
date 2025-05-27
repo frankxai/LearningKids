@@ -1,6 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
+import { youtubeIntegration } from "./youtube-integration";
 import { insertVideoSchema, insertPlaylistSchema, insertUserProgressSchema, insertUserSettingsSchema, insertFavoriteSchema } from "@shared/schema";
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -200,6 +201,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json({ isFavorite });
     } catch (error) {
       res.status(500).json({ message: "Failed to check favorite status" });
+    }
+  });
+
+  // YouTube Integration - Populate with real German content
+  app.post("/api/populate-german-content", async (req, res) => {
+    try {
+      if (!youtubeIntegration) {
+        return res.status(400).json({ message: "YouTube API key not configured" });
+      }
+      
+      await youtubeIntegration.populateGermanLearningContent();
+      res.json({ message: "German learning content populated successfully!" });
+    } catch (error) {
+      console.error("Error populating content:", error);
+      res.status(500).json({ message: "Failed to populate German content" });
     }
   });
 

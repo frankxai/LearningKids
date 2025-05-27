@@ -6,7 +6,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useAppState } from "@/hooks/use-app-state";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { apiRequest } from "@/lib/queryClient";
 import type { Category } from "@shared/schema";
 
 interface ParentalDashboardProps {
@@ -15,6 +16,7 @@ interface ParentalDashboardProps {
 }
 
 export function ParentalDashboard({ open, onOpenChange }: ParentalDashboardProps) {
+  const queryClient = useQueryClient();
   const { 
     settings, 
     updateSettings, 
@@ -25,6 +27,21 @@ export function ParentalDashboard({ open, onOpenChange }: ParentalDashboardProps
 
   const { data: categories = [] } = useQuery<Category[]>({
     queryKey: ["/api/categories"],
+  });
+
+  const populateContentMutation = useMutation({
+    mutationFn: async () => {
+      const res = await apiRequest("POST", "/api/populate-german-content");
+      return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/videos"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/playlists"] });
+      alert("Deutsche Lernvideos erfolgreich hinzugefügt! 🎉");
+    },
+    onError: () => {
+      alert("Fehler beim Laden der Videos. Bitte versuche es später noch einmal.");
+    }
   });
 
   if (!settings) return null;
@@ -164,19 +181,35 @@ export function ParentalDashboard({ open, onOpenChange }: ParentalDashboardProps
             </div>
             
             <div className="bg-gradient-to-r from-teal to-mint rounded-2xl p-6 text-white">
-              <h3 className="text-xl font-fredoka mb-4">Wöchentlicher Bericht</h3>
+              <h3 className="text-xl font-fredoka mb-4">Deutsche Lernvideos</h3>
               <p className="mb-4">
-                Ihr Kind macht großartige Fortschritte! Diese Woche wurden {totalVideosWatched} Videos 
-                angeschaut und {totalStarsEarned} Sterne gesammelt.
+                Füge echte deutsche Lernvideos von YouTube hinzu! Das ersetzt die Platzhalter 
+                mit authentischen Bildungsinhalten für Alphabet, Zahlen, Farben und mehr.
               </p>
+              <Button 
+                className="bg-white text-teal hover:bg-gray-100 transition-colors mr-4"
+                onClick={() => populateContentMutation.mutate()}
+                disabled={populateContentMutation.isPending}
+              >
+                {populateContentMutation.isPending ? (
+                  <>
+                    <i className="fas fa-spinner fa-spin mr-2"></i>
+                    Lade Videos...
+                  </>
+                ) : (
+                  <>
+                    <i className="fas fa-youtube mr-2"></i>
+                    Deutsche Videos hinzufügen
+                  </>
+                )}
+              </Button>
               <Button 
                 className="bg-white text-teal hover:bg-gray-100 transition-colors"
                 onClick={() => {
-                  // In a real app, this would generate and download a report
                   alert("Bericht wird erstellt...");
                 }}
               >
-                Vollständigen Bericht herunterladen
+                Wöchentlicher Bericht
               </Button>
             </div>
           </div>
