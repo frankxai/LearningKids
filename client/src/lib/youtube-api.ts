@@ -1,4 +1,4 @@
-const YOUTUBE_API_KEY = import.meta.env.VITE_YOUTUBE_API_KEY || process.env.YOUTUBE_API_KEY || "demo_key";
+const YOUTUBE_API_KEY = import.meta.env.VITE_YOUTUBE_API_KEY || "demo_key";
 
 export interface YouTubeVideo {
   id: string;
