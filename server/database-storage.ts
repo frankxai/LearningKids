@@ -1,4 +1,4 @@
-import { categories, videos, playlists, userProgress, userSettings, favorites, type Category, type Video, type Playlist, type UserProgress, type UserSettings, type Favorite, type InsertCategory, type InsertVideo, type InsertPlaylist, type InsertUserProgress, type InsertUserSettings, type InsertFavorite } from "@shared/schema";
+import { categories, videos, playlists, userProgress, userSettings, favorites, chatMessages, type Category, type Video, type Playlist, type UserProgress, type UserSettings, type Favorite, type ChatMessage, type InsertCategory, type InsertVideo, type InsertPlaylist, type InsertUserProgress, type InsertUserSettings, type InsertFavorite, type InsertChatMessage } from "@shared/schema";
 import { db } from "./db";
 import { eq, and, like, or } from "drizzle-orm";
 import type { IStorage } from "./storage";
@@ -183,5 +183,14 @@ export class DatabaseStorage implements IStorage {
   async isFavorite(videoId: number): Promise<boolean> {
     const [favorite] = await db.select().from(favorites).where(eq(favorites.videoId, videoId)).limit(1);
     return !!favorite;
+  }
+
+  async getChatMessages(userId: string): Promise<ChatMessage[]> {
+    return await db.select().from(chatMessages).where(eq(chatMessages.userId, userId)).orderBy(chatMessages.timestamp);
+  }
+
+  async addChatMessage(message: InsertChatMessage): Promise<ChatMessage> {
+    const [newMessage] = await db.insert(chatMessages).values(message).returning();
+    return newMessage;
   }
 }

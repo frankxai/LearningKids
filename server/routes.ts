@@ -3,6 +3,8 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { youtubeIntegration } from "./youtube-integration";
 import { insertVideoSchema, insertPlaylistSchema, insertUserProgressSchema, insertUserSettingsSchema, insertFavoriteSchema } from "@shared/schema";
+import type { ChatMessage } from "@shared/schema";
+import { getChatCompletion } from "./llm";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Categories
@@ -201,6 +203,47 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json({ isFavorite });
     } catch (error) {
       res.status(500).json({ message: "Failed to check favorite status" });
+    }
+  });
+
+  // Chat
+  app.get("/api/chat/:userId", async (req, res) => {
+    try {
+      const messages = await storage.getChatMessages(req.params.userId);
+      res.json(messages);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch messages" });
+    }
+  });
+
+  app.post("/api/chat", async (req, res) => {
+    try {
+      const { userId, message } = req.body;
+      if (!userId || !message) {
+        return res.status(400).json({ message: "userId and message required" });
+      }
+      const userMsg = await storage.addChatMessage({
+        userId,
+        message,
+        timestamp: new Date().toISOString(),
+        role: "user",
+      });
+
+      const assistantText = await getChatCompletion([
+        { role: "user", content: message },
+      ]);
+
+      const assistantMsg = await storage.addChatMessage({
+        userId,
+        message: assistantText,
+        timestamp: new Date().toISOString(),
+        role: "assistant",
+      });
+
+      res.json([userMsg, assistantMsg]);
+    } catch (error) {
+      console.error("chat error", error);
+      res.status(500).json({ message: "Chat failed" });
     }
   });
 

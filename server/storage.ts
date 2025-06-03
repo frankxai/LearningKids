@@ -1,9 +1,10 @@
-import { 
-  categories, videos, playlists, userProgress, userSettings, favorites,
-  type Category, type Video, type Playlist, type UserProgress, type UserSettings, type Favorite,
-  type InsertCategory, type InsertVideo, type InsertPlaylist, type InsertUserProgress, 
-  type InsertUserSettings, type InsertFavorite
+import {
+  categories, videos, playlists, userProgress, userSettings, favorites, chatMessages,
+  type Category, type Video, type Playlist, type UserProgress, type UserSettings, type Favorite, type ChatMessage,
+  type InsertCategory, type InsertVideo, type InsertPlaylist, type InsertUserProgress,
+  type InsertUserSettings, type InsertFavorite, type InsertChatMessage
 } from "@shared/schema";
+import { DatabaseStorage } from "./database-storage";
 
 export interface IStorage {
   // Categories
@@ -36,6 +37,10 @@ export interface IStorage {
   addFavorite(favorite: InsertFavorite): Promise<Favorite>;
   removeFavorite(videoId: number): Promise<boolean>;
   isFavorite(videoId: number): Promise<boolean>;
+
+  // Chat
+  getChatMessages(userId: string): Promise<ChatMessage[]>;
+  addChatMessage(message: InsertChatMessage): Promise<ChatMessage>;
 }
 
 export class MemStorage implements IStorage {
@@ -45,6 +50,7 @@ export class MemStorage implements IStorage {
   private userProgress: Map<number, UserProgress>;
   private userSettings: UserSettings;
   private favorites: Map<number, Favorite>;
+  private chatMessages: Map<number, ChatMessage>;
   private currentId: number;
 
   constructor() {
@@ -53,6 +59,7 @@ export class MemStorage implements IStorage {
     this.playlists = new Map();
     this.userProgress = new Map();
     this.favorites = new Map();
+    this.chatMessages = new Map();
     this.currentId = 1;
 
     // Initialize with default user settings
@@ -1025,7 +1032,17 @@ export class MemStorage implements IStorage {
   async isFavorite(videoId: number): Promise<boolean> {
     return Array.from(this.favorites.values()).some(f => f.videoId === videoId);
   }
+
+  async getChatMessages(userId: string): Promise<ChatMessage[]> {
+    return Array.from(this.chatMessages.values()).filter(m => m.userId === userId);
+  }
+
+  async addChatMessage(message: InsertChatMessage): Promise<ChatMessage> {
+    const id = this.currentId++;
+    const newMessage: ChatMessage = { id, ...message } as ChatMessage;
+    this.chatMessages.set(id, newMessage);
+    return newMessage;
+  }
 }
 
-// Use memory storage for now since database integration has issues
-export const storage = new MemStorage();
+export const storage = new DatabaseStorage();
