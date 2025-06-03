@@ -62,6 +62,14 @@ export const favorites = pgTable("favorites", {
   addedAt: text("added_at").notNull(),
 });
 
+export const chatMessages = pgTable("chat_messages", {
+  id: serial("id").primaryKey(),
+  userId: text("user_id").notNull(),
+  message: text("message").notNull(),
+  timestamp: text("timestamp").notNull(),
+  role: text("role").notNull(),
+});
+
 // Insert schemas
 export const insertCategorySchema = createInsertSchema(categories).omit({ id: true });
 export const insertVideoSchema = createInsertSchema(videos).omit({ id: true });
@@ -69,6 +77,7 @@ export const insertPlaylistSchema = createInsertSchema(playlists).omit({ id: tru
 export const insertUserProgressSchema = createInsertSchema(userProgress).omit({ id: true });
 export const insertUserSettingsSchema = createInsertSchema(userSettings).omit({ id: true });
 export const insertFavoriteSchema = createInsertSchema(favorites).omit({ id: true });
+export const insertChatMessageSchema = createInsertSchema(chatMessages).omit({ id: true });
 
 // Types
 export type Category = typeof categories.$inferSelect;
@@ -77,6 +86,7 @@ export type Playlist = typeof playlists.$inferSelect;
 export type UserProgress = typeof userProgress.$inferSelect;
 export type UserSettings = typeof userSettings.$inferSelect;
 export type Favorite = typeof favorites.$inferSelect;
+export type ChatMessage = typeof chatMessages.$inferSelect;
 
 export type InsertCategory = z.infer<typeof insertCategorySchema>;
 export type InsertVideo = z.infer<typeof insertVideoSchema>;
@@ -84,3 +94,4 @@ export type InsertPlaylist = z.infer<typeof insertPlaylistSchema>;
 export type InsertUserProgress = z.infer<typeof insertUserProgressSchema>;
 export type InsertUserSettings = z.infer<typeof insertUserSettingsSchema>;
 export type InsertFavorite = z.infer<typeof insertFavoriteSchema>;
+export type InsertChatMessage = z.infer<typeof insertChatMessageSchema>;

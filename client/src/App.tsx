@@ -10,6 +10,7 @@ import Favorites from "@/pages/favorites";
 import Search from "@/pages/search";
 import Profile from "@/pages/profile";
 import Quiz from "@/pages/quiz";
+import Chat from "@/pages/chat";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -21,6 +22,7 @@ function Router() {
       <Route path="/favorites" component={Favorites} />
       <Route path="/search" component={Search} />
       <Route path="/profile" component={Profile} />
+      <Route path="/chat" component={Chat} />
       <Route path="/quiz" component={Quiz} />
       <Route component={NotFound} />
     </Switch>

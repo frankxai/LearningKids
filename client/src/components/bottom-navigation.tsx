@@ -8,6 +8,7 @@ export function BottomNavigation() {
     { path: "/", icon: "fas fa-home", label: "Start" },
     { path: "/search", icon: "fas fa-search", label: "Suchen" },
     { path: "/favorites", icon: "fas fa-heart", label: "Favoriten" },
+    { path: "/chat", icon: "fas fa-comments", label: "Chat" },
     { path: "/profile", icon: "fas fa-user", label: "Profil" },
   ];
 
